@@ -1,0 +1,147 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #5a1e76;
+  --bgSecondary: #2B0040;
+  --cell: #43115B;
+  --playerX: #48D2FE;
+  --playerO: #E2BE00;
+  --draw: #BCDBF9;
+  --fc: #000;
+  --ff: 'Fredoka', sans-serif;
+  --cellDimensions: clamp(9rem, 9rem + 5vw, 14rem);
+  --scoreDimensions: clamp(8rem, 8rem + 5vw, 12rem);
+  --flagWidth: clamp(30rem, 30rem + 10vw, 45rem);
+  --flagHeight: 6.8rem;
+  --fsFlags: 3.2rem;
+  --fs-Score: 4rem;
+  --fs-PlayerName: 2rem;
+  --green: #06802F;
+  --darkGreen: #035B21;
+  font-size: 62.5%;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg);
+  font-family: var(--ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+#logo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: clamp(10rem, 10rem + 10vw, 20rem);
+}
+
+.score-board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+}
+
+.score-tag {
+  font-size: var(--fs-PlayerName);
+  border-radius: 10px;
+  width: var(--scoreDimensions);
+  height: var(--scoreDimensions);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.player-x {
+  background-color: var(--playerX);
+}
+
+.player-o {
+  background-color: var(--playerO);
+}
+
+.draw {
+  background-color: var(--draw);
+}
+
+.score {
+  font-size: var(--fs-Score);
+}
+
+#board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2.5rem;
+  background-color: var(--bgSecondary);
+  width: fit-content;
+  height: fit-content;
+  padding: 4rem;
+  border-radius: 50px;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: var(--cellDimensions) var(--cellDimensions) var(--cellDimensions);
+  grid-template-rows: var(--cellDimensions) var(--cellDimensions) var(--cellDimensions);
+  gap: clamp(1rem, 1.5rem + 1vw, 2rem);
+  padding: 0 2.5rem;
+}
+
+.cell {
+  width: var(--cellDimensions);
+  height: var(--cellDimensions);
+  background-color: var(--cell);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background-color: var(--bg);
+}
+
+#game-over-flag {
+  position: relative;
+  width: var(--flagWidth);
+  height: var(--flagHeight);
+  background-color: var(--green);
+  border-radius: 5px;
+}
+
+.flag-point {
+  background-color: var(--darkGreen);
+  width: 7.5rem;
+  height: var(--flagHeight);
+  border-radius: 5px;
+  position: absolute;
+}
+
+.flag-point.flag-point-1 {
+  top: 2.4rem;
+  left: -5rem;
+}
+
+.flag-point.flag-point-2 {
+  top: 2.4rem;
+  right: -5rem;
+}
+
+#game-over-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: var(--fsFlags);
+}

@@ -30,22 +30,25 @@
       </header>
       <div id="game-board">
         <div class="cell position-1"></div>
-        <div class="cell position-2"></div>
-        <div class="cell position-3"></div>
-        <div class="cell position-4"></div>
-        <div class="cell position-5"></div>
-        <div class="cell position-6"></div>
-        <div class="cell position-7"></div>
-        <div class="cell position-8"></div>
-        <div class="cell position-9"></div>
+        <p class="cell position-2"></p>
+        <p class="cell position-3"></p>
+        <p class="cell position-4"></p>
+        <p class="cell position-5"></p>
+        <p class="cell position-6"></p>
+        <p class="cell position-7"></p>
+        <p class="cell position-8"></p>
+        <p class="cell position-9"></p>
       </div>
       <footer>
         <div class="player-turn"></div>
-        <div id="game-over-flag">
-          <div class="flag-point flag-point-1"></div>
-          <p id="game-over-msg">Game over. <span id="winner-msg"></span></p>
-          <div class="flag-point flag-point-2"></div>
+        <div class="hide" id="game-over-flag">
+          <p class="flag" id="game-over-msg">Game over. <span id="winner-msg"></span></p>
+          <img src="./assets/flag-left.svg" alt="" class="flag-point flag-point-1">
+          <img src="./assets/flag-right.svg" alt="" class="flag-point flag-point-2">
         </div>
+          <p class="flag turn-x hide">X turn</p>
+          <p class=" flag turn-o hide">O turn</p>
+          <p class="flag new-game hide" >New game</p>
       </footer>
     </main>
     <img src="./assets/logo.svg" alt="logo" id="logo" />

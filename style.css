@@ -11,15 +11,18 @@
   --playerX: #48D2FE;
   --playerO: #E2BE00;
   --draw: #BCDBF9;
+  --newGame: #F4F6F5;
+  --hover: #C5A0D7;
   --fc: #000;
   --ff: 'Fredoka', sans-serif;
   --cellDimensions: clamp(9rem, 9rem + 5vw, 14rem);
   --scoreDimensions: clamp(8rem, 8rem + 5vw, 12rem);
-  --flagWidth: clamp(30rem, 30rem + 10vw, 45rem);
-  --flagHeight: 6.8rem;
-  --fsFlags: 3.2rem;
-  --fs-Score: 4rem;
-  --fs-PlayerName: 2rem;
+  --flagWidth: clamp(30rem, 30rem + 10vw, 42rem);
+  --flagHeight: clamp(4rem, 4rem + 2vw, 6.8rem);
+  --fsFlags: clamp(1.5rem, 1.5rem + 1.5vw, 3rem);
+  --fsScore: 4rem;
+  --fsPlayerName: 2rem;
+  --fsCell: clamp(6rem, 6rem + 3vw, 9.4rem);
   --green: #06802F;
   --darkGreen: #035B21;
   font-size: 62.5%;
@@ -51,7 +54,7 @@ body {
 }
 
 .score-tag {
-  font-size: var(--fs-PlayerName);
+  font-size: var(--fsPlayerName);
   border-radius: 10px;
   width: var(--scoreDimensions);
   height: var(--scoreDimensions);
@@ -76,7 +79,7 @@ body {
 }
 
 .score {
-  font-size: var(--fs-Score);
+  font-size: var(--fsScore);
 }
 
 #board {
@@ -106,35 +109,50 @@ body {
   background-color: var(--cell);
   border-radius: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fsCell);
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .cell:hover {
   background-color: var(--bg);
 }
 
+.flag {
+  width: var(--flagWidth);
+  height: var(--flagHeight);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fsFlags);
+  font-weight: 500;
+}
+
 #game-over-flag {
   position: relative;
   width: var(--flagWidth);
   height: var(--flagHeight);
-  background-color: var(--green);
-  border-radius: 5px;
 }
 
 .flag-point {
-  background-color: var(--darkGreen);
   width: 7.5rem;
   height: var(--flagHeight);
   border-radius: 5px;
   position: absolute;
+  z-index: 2;
 }
 
 .flag-point.flag-point-1 {
-  top: 2.4rem;
+  top: 1.5rem;
   left: -5rem;
 }
 
 .flag-point.flag-point-2 {
-  top: 2.4rem;
+  top: 1.5rem;
   right: -5rem;
 }
 
@@ -142,6 +160,36 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
   font-weight: 500;
   font-size: var(--fsFlags);
+  background-color: var(--green);
+  border-radius: 5px;
+  z-index: 5;
+  position: relative;
+}
+
+.turn-x {
+  background-color: var(--playerX);
+}
+
+.turn-o {
+  background-color: var(--playerO);
+}
+
+.new-game {
+  background-color: var(--newGame);
+  cursor: pointer;
+}
+
+.new-game:hover {
+  background-color: var(--hover);
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
 }

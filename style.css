@@ -121,6 +121,12 @@ body {
   background-color: var(--bg);
 }
 
+footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .flag {
   width: var(--flagWidth);
   height: var(--flagHeight);
@@ -186,8 +192,13 @@ body {
   background-color: var(--hover);
 }
 
-.show {
-  display: block;
+.reset-score {
+  background-color: var(--hover);
+  cursor: pointer;
+}
+
+.reset-score:hover {
+  background-color: var(--newGame);
 }
 
 .hide {

@@ -29,15 +29,15 @@
         </div>
       </header>
       <div id="game-board">
-        <div class="cell position-1"></div>
-        <p class="cell position-2"></p>
-        <p class="cell position-3"></p>
-        <p class="cell position-4"></p>
-        <p class="cell position-5"></p>
-        <p class="cell position-6"></p>
-        <p class="cell position-7"></p>
-        <p class="cell position-8"></p>
-        <p class="cell position-9"></p>
+        <p class="cell position1" onclick="play(position1)"></p>
+        <p class="cell position2" onclick="play(position2)"></p>
+        <p class="cell position3" onclick="play(position3)"></p>
+        <p class="cell position4" onclick="play(position4)"></p>
+        <p class="cell position5" onclick="play(position5)"></p>
+        <p class="cell position6" onclick="play(position6)"></p>
+        <p class="cell position7" onclick="play(position7)"></p>
+        <p class="cell position8" onclick="play(position8)"></p>
+        <p class="cell position9" onclick="play(position9)"></p>
       </div>
       <footer>
         <div class="player-turn"></div>
@@ -48,9 +48,12 @@
         </div>
           <p class="flag turn-x hide">X turn</p>
           <p class=" flag turn-o hide">O turn</p>
-          <p class="flag new-game hide" >New game</p>
+          <p class="flag new-game" onclick="newGame()" >New game</p>
+          <p class="flag reset-score hide" onclick="" >Reset Score</p>
       </footer>
     </main>
     <img src="./assets/logo.svg" alt="logo" id="logo" />
+
+    <script src="./script.js"></script>
   </body>
 </html>

@@ -34,11 +34,11 @@ function resetGame() {
   OturnButton.classList.add('hide');
   newGameButton.classList.remove('hide');
   resetGameButton.classList.add('hide');
+  setLocalStorage('@tic-tac-toe: isGameStarted', false);
 }
 
 function newGame() {
   let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
-  setLocalStorage('@tic-tac-toe: isGameStarted', true);
 
   if (lastGames === null) {
     setLocalStorage('@tic-tac-toe: games', [{ game: 1 }]);
@@ -56,6 +56,7 @@ function newGame() {
   resetGameButton.classList.remove('hide');
   newGameButton.classList.add('hide');
   XturnButton.classList.remove('hide');
+  setLocalStorage('@tic-tac-toe: isGameStarted', true);
 }
 
 function changeTurn() {

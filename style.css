@@ -192,12 +192,12 @@ footer {
   background-color: var(--hover);
 }
 
-.reset-score {
+.reset-score, .reset-game {
   background-color: var(--hover);
   cursor: pointer;
 }
 
-.reset-score:hover {
+.reset-score:hover, .reset-game:hover {
   background-color: var(--newGame);
 }
 

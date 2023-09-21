@@ -1,6 +1,7 @@
 let XturnButton = document.querySelector('.turn-x');
 let OturnButton = document.querySelector('.turn-o');
 let newGameButton = document.querySelector('.new-game');
+let resetGameButton = document.querySelector('.reset-game');
 
 let position1 = document.querySelector('.position1');
 let position2 = document.querySelector('.position2');
@@ -24,6 +25,17 @@ function setLocalStorage(key, value) {
   return localStorage.setItem(key, JSON.stringify(value));
 }
 
+function resetGame() {
+  for (let i = 1; i <= 9; i++) {
+    let position = '.position' + i;
+    document.querySelector(position).textContent = ' ';
+  }
+  XturnButton.classList.add('hide');
+  OturnButton.classList.add('hide');
+  newGameButton.classList.remove('hide');
+  resetGameButton.classList.add('hide');
+}
+
 function newGame() {
   let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
   setLocalStorage('@tic-tac-toe: isGameStarted', true);
@@ -39,13 +51,11 @@ function newGame() {
     console.log(whoseTurn);
   }
 
+  resetGame();
+
+  resetGameButton.classList.remove('hide');
   newGameButton.classList.add('hide');
   XturnButton.classList.remove('hide');
-
-  for (let i = 1; i <= 9; i++) {
-    let position = '.position' + i;
-    document.querySelector(position).textContent = ' ';
-  }
 }
 
 function changeTurn() {

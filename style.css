@@ -23,10 +23,10 @@
   --fsScore: 4rem;
   --fsPlayerName: 2rem;
   --fsCell: clamp(6rem, 6rem + 3vw, 9.4rem);
-  --gameBoardGap: clamp(1rem, 1.5rem + 1vw, 2rem);
+  --gameBoardGap: clamp(1rem, 1rem + 1vw, 2rem);
   --green: #06802F;
   --darkGreen: #035B21;
-  --borderGameOver: 5px solid #fff;
+  --borderGameOver: 8px solid #fff;
   font-size: 62.5%;
 }
 
@@ -94,7 +94,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: var(--gameBoardGap);
   background-color: var(--bgSecondary);
   width: fit-content;
   height: fit-content;
@@ -107,7 +107,7 @@ body {
   grid-template-columns: var(--cellDimensions) var(--cellDimensions) var(--cellDimensions);
   grid-template-rows: var(--cellDimensions) var(--cellDimensions) var(--cellDimensions);
   gap: var(--gameBoardGap);
-  padding: 0 2.5rem;
+  padding: 0 var(--gameBoardGap);
   position: relative;
 }
 
@@ -220,32 +220,52 @@ footer {
 }
 
 .line-h {
-  left: calc(2.5rem + var(--gameBoardGap));
+  left: calc(var(--gameBoardGap)*2);
+}
+
+.line-v {
+  transform: rotate(90deg);
+  top: calc(var(--cellDimensions)*1.5 + 2rem);
+}
+
+.first-line-v, .middle-line-v, .last-line-v, .first-line-h, .middle-line-h, .last-line-h, .diagonal-right, .diagonal-left {
+  border-top: var(--borderGameOver);
 }
 
 .first-line-h {
-  border-top: var(--borderGameOver);
   top: calc(var(--cellDimensions)/2);
 }
 
 .middle-line-h {
-  border-top: var(--borderGameOver);
   top: calc((var(--cellDimensions) + var(--cellDimensions)/2 + var(--gameBoardGap)));
 }
 
 .last-line-h  {
   bottom: calc(var(--cellDimensions)/2);
-  border-top: var(--borderGameOver);
 }
 
-.line.diagonal-right {
+.first-line-v {
+  left: calc((var(--gameBoardGap)*2) - (var(--cellDimensions)) - var(--gameBoardGap));
+}
+
+.middle-line-v {
+  left: calc(var(--gameBoardGap)*2);
+}
+
+.last-line-v {
+  left: calc((var(--gameBoardGap)*2) + (var(--cellDimensions) + var(--gameBoardGap)));
+}
+
+.line-dl, .line-dr {
+  width: calc((var(--cellDimensions)*3.5 + var(--gameBoardGap)*4));
+  right: calc(0rem - (var(--cellDimensions)/3.5));
+  top: calc((var(--cellDimensions) + var(--cellDimensions)/2 + var(--gameBoardGap)));
+}
+
+.line-dl {
   transform: rotate(45deg);
-} 
+}
 
-.line.diagonal-left {
+.line-dr {
   transform: rotate(-45deg);
-} 
-
-.line.vertical {
-  transform: rotate(90deg);
 }

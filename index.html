@@ -28,21 +28,25 @@
           <p class="score score-o">0</p>
         </div>
       </header>
-      <div id="game-board">
-        <p class="cell position1" onclick="play(position1)"></p>
-        <p class="cell position2" onclick="play(position2)"></p>
-        <p class="cell position3" onclick="play(position3)"></p>
-        <p class="cell position4" onclick="play(position4)"></p>
-        <p class="cell position5" onclick="play(position5)"></p>
-        <p class="cell position6" onclick="play(position6)"></p>
-        <p class="cell position7" onclick="play(position7)"></p>
-        <p class="cell position8" onclick="play(position8)"></p>
-        <p class="cell position9" onclick="play(position9)"></p>
+      <div id="game-board" onclick="checkWhoWon()">
+        <div class="line line-h"></div>
+        <div class="line diagonal-left"></div>
+        <div class="line diagonal-right"></div>
+        <div class="line vertical"></div>
+        <button class="cell position1" onclick="play(position1)"></button>
+        <button class="cell position2" onclick="play(position2)"></button>
+        <button class="cell position3" onclick="play(position3)"></button>
+        <button class="cell position4" onclick="play(position4)"></button>
+        <button class="cell position5" onclick="play(position5)"></button>
+        <button class="cell position6" onclick="play(position6)"></button>
+        <button class="cell position7" onclick="play(position7)"></button>
+        <button class="cell position8" onclick="play(position8)"></button>
+        <button class="cell position9" onclick="play(position9)"></button>
       </div>
       <footer>
         <div class="player-turn"></div>
         <div class="hide" id="game-over-flag">
-          <p class="flag" id="game-over-msg">Game over. <span id="winner-msg"></span></p>
+          <p class="flag" id="game-over-msg"><span id="winner-msg"></span></p>
           <img src="./assets/flag-left.svg" alt="" class="flag-point flag-point-1">
           <img src="./assets/flag-right.svg" alt="" class="flag-point flag-point-2">
         </div>

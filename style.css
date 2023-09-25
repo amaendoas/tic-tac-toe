@@ -11,19 +11,19 @@
   --playerX: #48D2FE;
   --playerO: #E2BE00;
   --draw: #BCDBF9;
-  --newGame: #F4F6F5;
+  --white: #F4F6F5;
   --hover: #C5A0D7;
   --fc: #000;
   --ff: 'Fredoka', sans-serif;
-  --cellDimensions: clamp(9rem, 9rem + 5vw, 14rem);
-  --scoreDimensions: clamp(8rem, 8rem + 5vw, 12rem);
-  --flagWidth: clamp(30rem, 30rem + 10vw, 42rem);
-  --flagHeight: clamp(4rem, 4rem + 2vw, 6.8rem);
+  --cellDimensions: clamp(8rem, 8rem + 4vw, 12rem);
+  --scoreDimensions: clamp(7.2rem, 7rem + 4vw, 11rem);
+  --flagWidth: 100%;
+  --flagHeight: clamp(3rem, 3rem + 2vw, 5rem);
   --fsFlags: clamp(1.5rem, 1.5rem + 1.5vw, 3rem);
-  --fsScore: 4rem;
-  --fsPlayerName: 2rem;
+  --fsScore: 3rem;
+  --fsPlayerName: clamp(1.5rem, 1vw, 2rem);
   --fsCell: clamp(6rem, 6rem + 3vw, 9.4rem);
-  --gameBoardGap: clamp(1rem, 1rem + 1vw, 2rem);
+  --gameBoardGap: clamp(0.8rem, 0.8rem + 1vw, 1.5rem);
   --green: #06802F;
   --darkGreen: #035B21;
   --borderGameOver: 8px solid #fff;
@@ -71,6 +71,7 @@ body {
   justify-content: center;
   text-transform: uppercase;
   font-weight: 500;
+  position: relative;
 }
 
 .player-x {
@@ -89,6 +90,17 @@ body {
   font-size: var(--fsScore);
 }
 
+#round {
+  position: absolute;
+  top: -2rem;
+  color: var(--white);
+  font-size: var(--fsPlayerName);
+  font-weight: 500;
+  background-color: var(--cell);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+}
+
 #board {
   display: flex;
   align-items: center;
@@ -100,6 +112,7 @@ body {
   height: fit-content;
   padding: 4rem;
   border-radius: 50px;
+  position: relative;
 }
 
 #game-board {
@@ -130,6 +143,7 @@ body {
 }
 
 footer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -146,67 +160,69 @@ footer {
   font-weight: 500;
 }
 
-#game-over-flag {
-  position: relative;
-  width: var(--flagWidth);
-  height: var(--flagHeight);
-}
-
-.flag-point {
-  width: 7.5rem;
-  height: var(--flagHeight);
-  border-radius: 5px;
+.turn-x, .turn-o, .winner {
   position: absolute;
-  z-index: 2;
-}
-
-.flag-point.flag-point-1 {
-  top: 1.5rem;
-  left: -5rem;
-}
-
-.flag-point.flag-point-2 {
-  top: 1.5rem;
-  right: -5rem;
-}
-
-#game-over-msg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  font-size: calc(var(--fsPlayerName) - 0.4rem);
+  text-transform: uppercase;
   font-weight: 500;
-  font-size: var(--fsFlags);
-  background-color: var(--green);
-  border-radius: 5px;
-  z-index: 5;
-  position: relative;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  z-index: 3;
+}
+
+.turn-x, .turn-o {
+  background-color: var(--cell);
+  bottom: calc(var(--scoreDimensions)*0.91);
 }
 
 .turn-x {
-  background-color: var(--playerX);
+  color: var(--playerX);
 }
 
 .turn-o {
-  background-color: var(--playerO);
+  color: var(--playerO);
 }
 
-.new-game {
-  background-color: var(--newGame);
+.winner {
+  background-color: var(--darkGreen);
+  color: var(--white);
+}
+
+.winner-x, .winner-o, .winner-draw {
+  top: calc(var(--scoreDimensions)*0.86);
+}
+
+.outline-border-x, .outline-border-o, .outline-border-draw {
+  position: absolute;
+  width: calc(var(--scoreDimensions) + 2rem);
+  height: calc(var(--scoreDimensions) + 2rem);
+  border-radius: 10px;
+  border: 4px solid var(--cell);
+  box-shadow: inset 0 0 1em var(--cell);
+  z-index: 1;
+}
+
+.outline-border-x.border-win, .outline-border-o.border-win, .outline-border-draw.border-win {
+  border: 4px solid var(--darkGreen);
+  box-shadow: inset 0 0 1em var(--darkGreen);
+}
+
+.new-round {
+  background-color: var(--white);
   cursor: pointer;
 }
 
-.new-game:hover {
+.new-round:hover {
   background-color: var(--hover);
 }
 
-.reset-score, .reset-game {
+.new-game, .reset-game {
   background-color: var(--hover);
   cursor: pointer;
 }
 
-.reset-score:hover, .reset-game:hover {
-  background-color: var(--newGame);
+.new-game:hover, .reset-game:hover {
+  background-color: var(--white);
 }
 
 .hide {
@@ -268,4 +284,29 @@ footer {
 
 .line-dr {
   transform: rotate(-45deg);
+}
+
+.animation {
+  animation: blick 1s ease-in;
+}
+
+#developer {
+  position: absolute;
+  bottom: 5rem;
+  font-size: var(--fsPlayerName);
+  color: var(--white);
+}
+
+#developer a {
+  color: var(--draw);
+  text-decoration: underline wavy;
+  transition: 500ms;
+}
+
+#developer a:visited {
+  color: var(--draw);
+}
+
+#developer a:hover {
+  color: var(--hover);
 }

@@ -15,18 +15,27 @@
   <body>
     <main id="board">
       <header class="score-board">
-        <div class="score-tag player-x">
-          <p>Player X</p>
-          <p class="score score-x">0</p>
+        <div class="score-tag player-x current-turn">
+          <p>Jogador X</p>
+          <p class="score score-X">0</p>
+          <p class="turn turn-x hide">vez do</p>
+          <div class="outline-border-x hide"></div>
+          <p class="winner winner-x hide">Ganhou</p>
         </div>
         <div class="score-tag draw">
-          <p>Draw</p>
+          <p>Empate</p>
           <p class="score score-draw">0</p>
+          <p class="winner winner-draw hide">Empatou</p>
+          <div class="outline-border-draw border-win hide"></div>
         </div>
-        <div class="score-tag player-o">
-          <p>Player O</p>
-          <p class="score score-o">0</p>
+        <div class="score-tag player-o current-turn">
+          <p>Jogador O</p>
+          <p class="score score-O">0</p>
+          <p class=" turn turn-o hide">vez do</p>
+          <div class="outline-border-o hide"></div>
+          <p class="winner winner-o hide">Ganhou</p>
         </div>
+        <div id="round" class="hide">Rodada: <span class="round-number"></span></div>
       </header>
       <div id="game-board" onclick="checkWhoWon()">
         <div class="line line-h"></div>
@@ -45,20 +54,13 @@
       </div>
       <footer>
         <div class="player-turn"></div>
-        <div class="hide" id="game-over-flag">
-          <p class="flag" id="game-over-msg"><span id="winner-msg"></span></p>
-          <img src="./assets/flag-left.svg" alt="" class="flag-point flag-point-1">
-          <img src="./assets/flag-right.svg" alt="" class="flag-point flag-point-2">
-        </div>
-          <p class="flag turn-x hide">X turn</p>
-          <p class=" flag turn-o hide">O turn</p>
-          <p class="flag new-game" onclick="newGame()" >New game</p>
-          <p class="flag reset-score hide" onclick="" >Reset Score</p>
-          <p class="flag reset-game hide" onclick="resetGame()" >Reset Game</p>
+          <p class="flag new-round" onclick="newRound()" >Nova Rodada</p>
+          <p class="flag new-game hide" onclick="newGame()" >Novo Jogo</p>
+          <p class="flag reset-game hide" onclick="resetGame()" >Reiniciar Rodada</p>
       </footer>
     </main>
     <img src="./assets/logo.svg" alt="logo" id="logo" />
-
+    <div id="developer">Desenvolvido por: <a href="https://github.com/amaendoas" target="_blank">Amanda</a></div>
     <script src="./script.js"></script>
   </body>
 </html>

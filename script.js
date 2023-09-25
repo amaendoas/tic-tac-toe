@@ -1,14 +1,29 @@
 let XturnButton = document.querySelector('.turn-x');
 let OturnButton = document.querySelector('.turn-o');
+
+let XWonButton = document.querySelector('.winner-x');
+let OWonButton = document.querySelector('.winner-o');
+let drawWonButton = document.querySelector('.winner-draw');
+
+let borderX = document.querySelector('.outline-border-x');
+let borderO = document.querySelector('.outline-border-o');
+let borderDraw = document.querySelector('.outline-border-draw');
+
+let newRoundButton = document.querySelector('.new-round');
 let newGameButton = document.querySelector('.new-game');
-let resetGameButton = document.querySelector('.reset-game');
-let gameOverFlag = document.querySelector('#game-over-flag');
-let winnerMsg = document.querySelector('#winner-msg');
+let resetRoundButton = document.querySelector('.reset-game');
+let roundNumber = document.querySelector('.round-number');
+let roundButton = document.querySelector('#round');
+
 let line = document.querySelectorAll('.line');
 let lineH = document.querySelector('.line-h');
 let lineV = document.querySelector('.line-v');
 let lineDl = document.querySelector('.line-dl');
 let lineDr = document.querySelector('.line-dr');
+
+let scoreBoardX = document.querySelector('.score-X');
+let scoreBoardO = document.querySelector('.score-O');
+let scoreBoardDraw = document.querySelector('.score-draw');
 
 let position1 = document.querySelector('.position1');
 let position2 = document.querySelector('.position2');
@@ -20,9 +35,30 @@ let position7 = document.querySelector('.position7');
 let position8 = document.querySelector('.position8');
 let position9 = document.querySelector('.position9');
 
-let lastGames = getLocalStorage('@tic-tac-toe: games');
-
 setLocalStorage('@tic-tac-toe: isGameStarted', false);
+
+let gameStatus = getLocalStorage('@tic-tac-toe: isGameStarted');
+
+let score = getLocalStorage('@tic-tac-toe: games')
+  ? getLocalStorage('@tic-tac-toe: games')
+  : setLocalStorage('@tic-tac-toe: games', {
+      round: 0,
+      playerX: 0,
+      playerO: 0,
+      draw: 0
+    });
+
+if (score.round !== 0) {
+  newGameButton.classList.remove('hide');
+}
+
+scoreBoardX.textContent = score.playerX ? score.playerX : '0';
+scoreBoardO.textContent = score.playerO ? score.playerO : '0';
+scoreBoardDraw.textContent = score.draw ? score.draw : '0';
+
+function changeHTML(selector, content) {
+  document.querySelector(selector).textContent = content;
+}
 
 function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
@@ -30,6 +66,48 @@ function getLocalStorage(key) {
 
 function setLocalStorage(key, value) {
   return localStorage.setItem(key, JSON.stringify(value));
+}
+
+function changeClassList(element, attribute, value) {
+  if (attribute === 'add') {
+    element.classList.add(value);
+  } else {
+    element.classList.remove(value);
+  }
+}
+
+function changePlayersTurnHighlight(player, attribute) {
+  if (player === 'X' && attribute === 'add') {
+    XturnButton.classList.add('hide');
+    borderX.classList.add('hide');
+  } else if (player === 'X' && attribute === 'remove') {
+    XturnButton.classList.remove('hide');
+    borderX.classList.remove('hide');
+  } else if (player == 'O' && attribute === 'add') {
+    OturnButton.classList.add('hide');
+    borderO.classList.add('hide');
+  } else if (player == 'O' && attribute === 'remove') {
+    OturnButton.classList.remove('hide');
+    borderO.classList.remove('hide');
+  }
+}
+
+function setPlayerWonHighlight(player) {
+  if (player === 'X') {
+    XturnButton.classList.add('hide');
+    XWonButton.classList.remove('hide');
+    borderX.classList.remove('hide');
+    borderX.classList.add('border-win');
+  } else if (player === 'O') {
+    OturnButton.classList.add('hide');
+    OWonButton.classList.remove('hide');
+    borderO.classList.remove('hide');
+    borderO.classList.add('border-win');
+  } else if (player === 'draw') {
+    drawWonButton.classList.remove('hide');
+    borderDraw.classList.remove('hide');
+    borderDraw.classList.add('border-win');
+  }
 }
 
 function disabledOrAble(status) {
@@ -44,63 +122,88 @@ function disabledOrAble(status) {
 }
 
 function resetGame() {
+  let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
   for (let i = 1; i <= 9; i++) {
     let position = '.position' + i;
     document.querySelector(position).textContent = ' ';
   }
-  XturnButton.classList.add('hide');
-  OturnButton.classList.add('hide');
-  newGameButton.classList.remove('hide');
-  resetGameButton.classList.add('hide');
-  gameOverFlag.classList.add('hide');
-
   resetCrossLine();
-
-  setLocalStorage('@tic-tac-toe: isGameStarted', false);
   disabledOrAble('able');
+
+  if (whoseTurn === 'O') {
+    changeTurn();
+  }
 }
 
 function resetCrossLine() {
   for (let i = 0; i < line.length; i++) {
-    let divClassList = line[i].classList
+    let divClassList = line[i].classList;
     for (let i = 0; i < divClassList.length; i++) {
       let divClass = divClassList[i];
-      if(divClass !== "line" && divClass !== "line-h" && divClass !== 'line-dl' && divClass !== 'line-v' && divClass !== 'line-dr') {
+      if (
+        divClass !== 'line' &&
+        divClass !== 'line-h' &&
+        divClass !== 'line-dl' &&
+        divClass !== 'line-v' &&
+        divClass !== 'line-dr'
+      ) {
         divClassList.remove(divClass);
       }
     }
   }
 }
 
-function newGame() {
+function newRound() {
   let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
-
-  if (lastGames === null) {
-    setLocalStorage('@tic-tac-toe: games', [{ game: 1 }]);
-  }
+  let gameScore = getLocalStorage('@tic-tac-toe: games');
 
   if (whoseTurn === null || whoseTurn === 'O') {
     setLocalStorage('@tic-tac-toe: turn', 'X');
   }
 
-  resetGame();
+  if (gameScore.round === 0) {
+    setLocalStorage('@tic-tac-toe: games', { ...gameScore, round: 1 });
+    changeHTML('.round-number', gameScore.round + 1);
+  } else {
+    setLocalStorage('@tic-tac-toe: games', {
+      ...gameScore,
+      round: gameScore.round + 1
+    });
 
-  resetGameButton.classList.remove('hide');
+    changeHTML('.round-number', gameScore.round + 1);
+  }
+
+  resetGame();
+  changePlayersTurnHighlight('X', 'remove');
+
+  resetRoundButton.classList.remove('hide');
+  newRoundButton.classList.add('hide');
+  round.classList.remove('hide');
   newGameButton.classList.add('hide');
-  XturnButton.classList.remove('hide');
+
   setLocalStorage('@tic-tac-toe: isGameStarted', true);
+}
+
+function newGame() {
+  let confirmNewGame = confirm(
+    'Tem certeza que deseja começar um novo jogo? Os placares serão zerados.'
+  );
+  if (confirmNewGame) {
+    resetScore();
+    newRound();
+  }
 }
 
 function changeTurn() {
   let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
   if (whoseTurn === 'X') {
     setLocalStorage('@tic-tac-toe: turn', 'O');
-    XturnButton.classList.add('hide');
-    OturnButton.classList.remove('hide');
+    changePlayersTurnHighlight('X', 'add');
+    changePlayersTurnHighlight('O', 'remove');
   } else {
     setLocalStorage('@tic-tac-toe: turn', 'X');
-    OturnButton.classList.add('hide');
-    XturnButton.classList.remove('hide');
+    changePlayersTurnHighlight('O', 'add');
+    changePlayersTurnHighlight('X', 'remove');
   }
 }
 
@@ -110,7 +213,7 @@ function play(position) {
   position.setAttribute('disabled', 'disabled');
 
   if (isGameStarted === false) {
-    alert('Please start a new game');
+    alert('Por favor comece o jogo!');
   } else if (whoseTurn === 'X') {
     position.textContent = 'X';
     position.style.color = '#48D2FE';
@@ -139,14 +242,12 @@ function putCrossLine(player, position) {
 
   if ((playerX || playerO) && firstLineH) {
     lineH.classList.add('first-line-h');
-    console.log("ganhou na primeira linha horizontalmente")
   } else if ((playerX || playerO) && middleLineH) {
     lineH.classList.add('middle-line-h');
   } else if ((playerX || playerO) && lastLineH) {
     lineH.classList.add('last-line-h');
   } else if ((playerX || playerO) && firstLineV) {
     lineV.classList.add('first-line-v');
-    console.log("ganhou na primeira linha verticalmente")
   } else if ((playerX || playerO) && middleLineV) {
     lineV.classList.add('middle-line-v');
   } else if ((playerX || playerO) && lastLineV) {
@@ -155,8 +256,6 @@ function putCrossLine(player, position) {
     lineDl.classList.add('diagonal-left');
   } else if ((playerX || playerO) && diagonalRight) {
     lineDr.classList.add('diagonal-right');
-  } else {
-    console.log('entrou aqui');
   }
 }
 
@@ -226,35 +325,25 @@ function checkIfWonDiagonally(player) {
     position5.textContent === player &&
     position7.textContent === player;
 
-    if (diagonalLeft) {
-      putCrossLine(player, 'diagonal left');
-      return true;
-    } else if (diagonalRight) {
-      putCrossLine(player, 'diagonal right');
-      return true;
-    } else {
-      return false;
-    }
+  if (diagonalLeft) {
+    putCrossLine(player, 'diagonal left');
+    return true;
+  } else if (diagonalRight) {
+    putCrossLine(player, 'diagonal right');
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function gameOver(player) {
-  if (player === 'X') {
-    OturnButton.classList.add('hide');
-  } else {
-    XturnButton.classList.add('hide');
-  }
+  changePlayersTurnHighlight('X', 'add');
+  changePlayersTurnHighlight('O', 'add');
+  setPlayerWonHighlight(player);
 
-  if(player === 'X' || player === 'O') {
-    winnerMsg.textContent = `${player} won!`;
-  } else {
-    winnerMsg.textContent = "It's a draw!";
-    XturnButton.classList.add('hide');
-    OturnButton.classList.add('hide');
-  }
-
-  gameOverFlag.classList.remove('hide');
+  newRoundButton.classList.remove('hide');
+  resetRoundButton.classList.add('hide');
   newGameButton.classList.remove('hide');
-  resetGameButton.classList.add('hide');
 
   disabledOrAble('disabled');
 }
@@ -263,30 +352,76 @@ function allPositionsAreFilled() {
   let positionsFilled = [];
   for (let i = 1; i <= 9; i++) {
     let position = '.position' + i;
-    let currentPosition = document.querySelector(position).textContent
+    let currentPosition = document.querySelector(position).textContent;
 
     if (currentPosition === 'X' || currentPosition === 'O') {
-      positionsFilled.push({position: true})
+      positionsFilled.push({ position: true });
     } else {
-      positionsFilled.push({position: false})
-    }    
+      positionsFilled.push({ position: false });
+    }
   }
 
   for (let i = 0; i < positionsFilled.length; i++) {
-    if(positionsFilled[i].position === false) {
-      return false
-    };
+    if (positionsFilled[i].position === false) {
+      return false;
+    }
   }
 
   return true;
 }
 
+function changeScore(player) {
+  let findScore = '.score-' + player;
+  let currentPlayer = 'player' + player;
+  let previousScore = getLocalStorage('@tic-tac-toe: games');
+  let newScore;
+
+  if (player === 'draw') {
+    newScore = previousScore[player] + 1;
+    setLocalStorage('@tic-tac-toe: games', {
+      ...previousScore,
+      [player]: newScore
+    });
+  } else {
+    newScore = previousScore[currentPlayer] + 1;
+    setLocalStorage('@tic-tac-toe: games', {
+      ...previousScore,
+      [currentPlayer]: newScore
+    });
+  }
+
+  changeHTML(findScore, newScore);
+}
+
+function resetScore() {
+  setLocalStorage('@tic-tac-toe: games', {
+    round: 0,
+    playerX: 0,
+    playerO: 0,
+    draw: 0
+  });
+  changeHTML('.score-X', 0);
+  changeHTML('.score-O', 0);
+  changeHTML('.score-draw', 0);
+}
+
 function checkWhoWon() {
-  if (checkIfWonHorizontally('X') || checkIfWonVertically('X') || checkIfWonDiagonally('X')) {
+  if (
+    checkIfWonHorizontally('X') ||
+    checkIfWonVertically('X') ||
+    checkIfWonDiagonally('X')
+  ) {
     gameOver('X');
-  } else if (checkIfWonHorizontally('O') || checkIfWonVertically('O') || checkIfWonDiagonally('O')) {
+    changeScore('X');
+  } else if (
+    checkIfWonHorizontally('O') ||
+    checkIfWonVertically('O') ||
+    checkIfWonDiagonally('O')
+  ) {
     gameOver('O');
-  } else if(allPositionsAreFilled()) {
-    gameOver('draw')
+    changeScore('O');
+  } else if (allPositionsAreFilled()) {
+    gameOver('draw');
+    changeScore('draw');
   }
 }

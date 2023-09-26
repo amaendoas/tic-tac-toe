@@ -1,10 +1,3 @@
-let XturnButton = document.querySelector('.turn-x');
-let OturnButton = document.querySelector('.turn-o');
-
-let XWonButton = document.querySelector('.winner-x');
-let OWonButton = document.querySelector('.winner-o');
-let drawWonButton = document.querySelector('.winner-draw');
-
 let borderX = document.querySelector('.outline-border-x');
 let borderO = document.querySelector('.outline-border-o');
 let borderDraw = document.querySelector('.outline-border-draw');
@@ -14,6 +7,9 @@ let newGameButton = document.querySelector('.new-game');
 let resetRoundButton = document.querySelector('.reset-game');
 let roundNumber = document.querySelector('.round-number');
 let roundButton = document.querySelector('#round');
+
+let gameOverTag = document.querySelector('#game-over');
+let gameOverMsg = document.querySelector('.who-won');
 
 let line = document.querySelectorAll('.line');
 let lineH = document.querySelector('.line-h');
@@ -68,43 +64,30 @@ function setLocalStorage(key, value) {
   return localStorage.setItem(key, JSON.stringify(value));
 }
 
-function changeClassList(element, attribute, value) {
-  if (attribute === 'add') {
-    element.classList.add(value);
-  } else {
-    element.classList.remove(value);
-  }
+function searchHTMLElement(selector) {
+  return document.querySelector(selector);
 }
 
 function changePlayersTurnHighlight(player, attribute) {
-  if (player === 'X' && attribute === 'add') {
-    XturnButton.classList.add('hide');
+  if (player === 'X' && attribute === 'hide') {
     borderX.classList.add('hide');
-  } else if (player === 'X' && attribute === 'remove') {
-    XturnButton.classList.remove('hide');
+  } else if (player === 'X' && attribute === 'show') {
     borderX.classList.remove('hide');
-  } else if (player == 'O' && attribute === 'add') {
-    OturnButton.classList.add('hide');
+  } else if (player == 'O' && attribute === 'hide') {
     borderO.classList.add('hide');
-  } else if (player == 'O' && attribute === 'remove') {
-    OturnButton.classList.remove('hide');
+  } else if (player == 'O' && attribute === 'show') {
     borderO.classList.remove('hide');
   }
 }
 
 function setPlayerWonHighlight(player) {
   if (player === 'X') {
-    XturnButton.classList.add('hide');
-    XWonButton.classList.remove('hide');
     borderX.classList.remove('hide');
     borderX.classList.add('border-win');
   } else if (player === 'O') {
-    OturnButton.classList.add('hide');
-    OWonButton.classList.remove('hide');
     borderO.classList.remove('hide');
     borderO.classList.add('border-win');
   } else if (player === 'draw') {
-    drawWonButton.classList.remove('hide');
     borderDraw.classList.remove('hide');
     borderDraw.classList.add('border-win');
   }
@@ -118,6 +101,22 @@ function disabledOrAble(status) {
     } else {
       document.querySelector(position).removeAttribute('disabled');
     }
+  }
+}
+function resetPlayerWonHighlight() {
+  if (borderX) {
+    borderX.classList.remove('border-win');
+    changePlayersTurnHighlight('X', 'hide');
+  }
+
+  if (borderO) {
+    borderO.classList.remove('border-win');
+    changePlayersTurnHighlight('O', 'hide');
+  }
+
+  if (borderDraw) {
+    borderDraw.classList.remove('border-win');
+    borderDraw.classList.add('hide');
   }
 }
 
@@ -174,12 +173,14 @@ function newRound() {
   }
 
   resetGame();
-  changePlayersTurnHighlight('X', 'remove');
+  resetPlayerWonHighlight();
+  changePlayersTurnHighlight('X', 'show');
 
   resetRoundButton.classList.remove('hide');
   newRoundButton.classList.add('hide');
   round.classList.remove('hide');
   newGameButton.classList.add('hide');
+  gameOverTag.classList.add('hide');
 
   setLocalStorage('@tic-tac-toe: isGameStarted', true);
 }
@@ -191,6 +192,7 @@ function newGame() {
   if (confirmNewGame) {
     resetScore();
     newRound();
+    setLocalStorage('@tic-tac-toe: isGameStarted', true);
   }
 }
 
@@ -198,12 +200,12 @@ function changeTurn() {
   let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
   if (whoseTurn === 'X') {
     setLocalStorage('@tic-tac-toe: turn', 'O');
-    changePlayersTurnHighlight('X', 'add');
-    changePlayersTurnHighlight('O', 'remove');
+    changePlayersTurnHighlight('X', 'hide');
+    changePlayersTurnHighlight('O', 'show');
   } else {
     setLocalStorage('@tic-tac-toe: turn', 'X');
-    changePlayersTurnHighlight('O', 'add');
-    changePlayersTurnHighlight('X', 'remove');
+    changePlayersTurnHighlight('O', 'hide');
+    changePlayersTurnHighlight('X', 'show');
   }
 }
 
@@ -337,9 +339,22 @@ function checkIfWonDiagonally(player) {
 }
 
 function gameOver(player) {
-  changePlayersTurnHighlight('X', 'add');
-  changePlayersTurnHighlight('O', 'add');
+  let playerLowerCase = player.toLowerCase();
+  let tag = 'game-over-' + playerLowerCase;
+  
   setPlayerWonHighlight(player);
+  gameOverTag.classList.remove('hide');
+  gameOverTag.classList.add(tag);
+  
+  if (player === 'draw') {
+    gameOverMsg.textContent = 'Empate';
+  } else if(player === 'X') {
+    gameOverMsg.textContent = player;
+    changePlayersTurnHighlight('O', 'hide');
+  } else {
+    changePlayersTurnHighlight('X', 'hide');
+    gameOverMsg.textContent = player;
+  }
 
   newRoundButton.classList.remove('hide');
   resetRoundButton.classList.add('hide');

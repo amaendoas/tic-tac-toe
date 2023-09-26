@@ -21,7 +21,7 @@
   --flagHeight: clamp(3rem, 3rem + 2vw, 5rem);
   --fsFlags: clamp(1.5rem, 1.5rem + 1.5vw, 3rem);
   --fsScore: 3rem;
-  --fsPlayerName: clamp(1.5rem, 1vw, 2rem);
+  --fsPlayerName: clamp(1.5rem, 1vw, 1.8rem);
   --fsCell: clamp(6rem, 6rem + 3vw, 9.4rem);
   --gameBoardGap: clamp(0.8rem, 0.8rem + 1vw, 1.5rem);
   --green: #06802F;
@@ -94,7 +94,7 @@ body {
   position: absolute;
   top: -2rem;
   color: var(--white);
-  font-size: var(--fsPlayerName);
+  font-size: calc(var(--fsPlayerName) + 0.5rem);
   font-weight: 500;
   background-color: var(--cell);
   padding: 1rem 2rem;
@@ -160,36 +160,19 @@ footer {
   font-weight: 500;
 }
 
-.turn-x, .turn-o, .winner {
-  position: absolute;
-  font-size: calc(var(--fsPlayerName) - 0.4rem);
-  text-transform: uppercase;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  z-index: 3;
+.outline-border-x {
+  border: 4px solid var(--playerX);
+  box-shadow: inset 0 0 1em var(--playerX);
 }
 
-.turn-x, .turn-o {
-  background-color: var(--cell);
-  bottom: calc(var(--scoreDimensions)*0.91);
+.outline-border-o {
+  border: 4px solid var(--playerO);
+  box-shadow: inset 0 0 1em var(--playerO);
 }
 
-.turn-x {
-  color: var(--playerX);
-}
-
-.turn-o {
-  color: var(--playerO);
-}
-
-.winner {
-  background-color: var(--darkGreen);
-  color: var(--white);
-}
-
-.winner-x, .winner-o, .winner-draw {
-  top: calc(var(--scoreDimensions)*0.86);
+.outline-border-draw { 
+  border: 4px solid var(--draw);
+  box-shadow: inset 0 0 1em var(--draw);
 }
 
 .outline-border-x, .outline-border-o, .outline-border-draw {
@@ -197,8 +180,6 @@ footer {
   width: calc(var(--scoreDimensions) + 2rem);
   height: calc(var(--scoreDimensions) + 2rem);
   border-radius: 10px;
-  border: 4px solid var(--cell);
-  box-shadow: inset 0 0 1em var(--cell);
   z-index: 1;
 }
 
@@ -309,4 +290,26 @@ footer {
 
 #developer a:hover {
   color: var(--hover);
+}
+
+#game-over {
+  position: absolute;
+  font-size: calc(var(--fsPlayerName) + 0.5rem);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 500;
+  top: -2rem;
+  z-index: 6;
+}
+
+.game-over-x {
+  background-color: var(--playerX);
+}
+
+.game-over-o {
+  background-color: var(--playerO);
+}
+
+.game-over-draw {
+  background-color: var(--draw);
 }

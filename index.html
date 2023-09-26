@@ -18,24 +18,20 @@
         <div class="score-tag player-x current-turn">
           <p>Jogador X</p>
           <p class="score score-X">0</p>
-          <p class="turn turn-x hide">vez do</p>
           <div class="outline-border-x hide"></div>
-          <p class="winner winner-x hide">Ganhou</p>
         </div>
         <div class="score-tag draw">
           <p>Empate</p>
           <p class="score score-draw">0</p>
-          <p class="winner winner-draw hide">Empatou</p>
-          <div class="outline-border-draw border-win hide"></div>
+          <div class="outline-border-draw hide"></div>
         </div>
         <div class="score-tag player-o current-turn">
           <p>Jogador O</p>
           <p class="score score-O">0</p>
-          <p class=" turn turn-o hide">vez do</p>
           <div class="outline-border-o hide"></div>
-          <p class="winner winner-o hide">Ganhou</p>
         </div>
         <div id="round" class="hide">Rodada: <span class="round-number"></span></div>
+        <div id="game-over" class="hide">Fim de Jogo: <span class="who-won"></span></div>
       </header>
       <div id="game-board" onclick="checkWhoWon()">
         <div class="line line-h"></div>

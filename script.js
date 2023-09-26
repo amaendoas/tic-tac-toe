@@ -4,9 +4,10 @@ let borderDraw = document.querySelector('.outline-border-draw');
 
 let newRoundButton = document.querySelector('.new-round');
 let newGameButton = document.querySelector('.new-game');
-let resetRoundButton = document.querySelector('.reset-game');
+let resetRoundButton = document.querySelector('.reset-round');
 let roundNumber = document.querySelector('.round-number');
 let roundButton = document.querySelector('#round');
+let continueRoundButton = document.querySelector('.continue-round');
 
 let gameOverTag = document.querySelector('#game-over');
 let gameOverMsg = document.querySelector('.who-won');
@@ -46,6 +47,8 @@ let score = getLocalStorage('@tic-tac-toe: games')
 
 if (score.round !== 0) {
   newGameButton.classList.remove('hide');
+  continueRoundButton.classList.remove('hide');
+  newRoundButton.classList.add('hide');
 }
 
 scoreBoardX.textContent = score.playerX ? score.playerX : '0';
@@ -152,13 +155,28 @@ function resetCrossLine() {
   }
 }
 
-function newRound() {
+function startRound() {
   let whoseTurn = getLocalStorage('@tic-tac-toe: turn');
   let gameScore = getLocalStorage('@tic-tac-toe: games');
 
   if (whoseTurn === null || whoseTurn === 'O') {
     setLocalStorage('@tic-tac-toe: turn', 'X');
   }
+  changeHTML('.round-number', gameScore.round);
+
+  newRoundButton.classList.add('hide');
+  resetRoundButton.classList.remove('hide');
+  round.classList.remove('hide');
+  newGameButton.classList.add('hide');
+  gameOverTag.classList.add('hide');
+  continueRoundButton.classList.add('hide');
+
+  setLocalStorage('@tic-tac-toe: isGameStarted', true);
+}
+
+function newRound() {
+  startRound()
+  let gameScore = getLocalStorage('@tic-tac-toe: games');
 
   if (gameScore.round === 0) {
     setLocalStorage('@tic-tac-toe: games', { ...gameScore, round: 1 });
@@ -175,13 +193,6 @@ function newRound() {
   resetGame();
   resetPlayerWonHighlight();
   changePlayersTurnHighlight('X', 'show');
-
-  resetRoundButton.classList.remove('hide');
-  newRoundButton.classList.add('hide');
-  round.classList.remove('hide');
-  newGameButton.classList.add('hide');
-  gameOverTag.classList.add('hide');
-
   setLocalStorage('@tic-tac-toe: isGameStarted', true);
 }
 
@@ -193,7 +204,9 @@ function newGame() {
     resetScore();
     newRound();
     setLocalStorage('@tic-tac-toe: isGameStarted', true);
-  }
+  } else {
+    return
+}
 }
 
 function changeTurn() {
@@ -215,7 +228,7 @@ function play(position) {
   position.setAttribute('disabled', 'disabled');
 
   if (isGameStarted === false) {
-    alert('Por favor comece o jogo!');
+    alert('Por favor comece um novo jogo ou continue a rodada!');
   } else if (whoseTurn === 'X') {
     position.textContent = 'X';
     position.style.color = '#48D2FE';
@@ -348,6 +361,8 @@ function gameOver(player) {
   
   if (player === 'draw') {
     gameOverMsg.textContent = 'Empate';
+    changePlayersTurnHighlight('O', 'hide');
+    changePlayersTurnHighlight('X', 'hide');
   } else if(player === 'X') {
     gameOverMsg.textContent = player;
     changePlayersTurnHighlight('O', 'hide');
